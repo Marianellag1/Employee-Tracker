@@ -19,6 +19,4 @@ const db = mysql.createConnection(
     console.log(`Connected to the classlist_db database.`)
 );
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.listen(PORT, () => console.log(`Listening on PORT: ${PORT}`));
