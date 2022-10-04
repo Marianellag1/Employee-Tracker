@@ -11,6 +11,8 @@
   "author": "Marianella",
   "license": "ISC",
   "dependencies": {
+    "console.table": "^0.10.0",
+    "express": "^4.18.1",
     "inquirer": "^9.1.2",
     "mysql2": "^2.3.3"
   }
