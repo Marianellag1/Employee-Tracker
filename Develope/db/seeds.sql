@@ -1,14 +1,27 @@
 INSERT INTO department (department_name)
 VALUES ("Sales"),
-       ("Engineer"),
-       ("Finance");
+       ("Engineering"),
+       ("Finance"),
+       ("Legal");
+
       
-INSERT INTO roles (title, salary)
-VALUES ("Sales", "80000"),
-       ("Engineering", "150000"),
-       ("Finance", "125000");
+INSERT INTO roles (title, salary, department_id)
+VALUES ("Sales Lead", "100000", 1),
+       ("Salesperson", "80000", 1),
+       ("Lead Engineer", "150000", 2)
+       ("Software Engineer", "120000", 2),
+       ("Account Manager", "160000", 3),
+       ("Accountant", "125000", 3),
+       ("Legal Team Lead", "250000", 4),
+       ("Lawyer", "190000", 4);
+-- roles taken from class hours quick challange walkthrough
+-- roles are joined to department
 
 INSERT INTO employee (first_name, last_name)
 VALUES ("Edna", "Mode"),
        ("Tony", "Montana"),
-       ("Wednesday", "Addams");
+       ("Wednesday", "Addams"),
+       ("Ace", "Ventura"),
+       ("Sarah", "Connor"),
+       ("Rocky", "Balboa"),
+       ("Katniss", "Everdeen");
