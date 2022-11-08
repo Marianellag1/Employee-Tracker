@@ -5,7 +5,7 @@ USE employees_db;
 
 CREATE TABLE department (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    department_name VARCHAR(30) NOT NULL --  to hold department name**
+    department_name VARCHAR(30) NOT NULL -- to hold department name**
 );
 
 CREATE TABLE roles (
@@ -24,8 +24,10 @@ CREATE TABLE employee (
     last_name VARCHAR(30) NOT NULL, -- to hold employee last name**
     role_id INT, -- to hold reference to employee role**
     manager_id INT, -- to hold reference to another employee that is the manager of the current employee (`null` if the employee has no manager)**
-    FOREIGN KEY (role_id) REFERENCES roles(id),
-    FOREIGN KEY (manager_id) REFERENCES employee(id)
+    FOREIGN KEY (role_id) 
+    REFERENCES roles(id),
+    FOREIGN KEY (manager_id)
+    REFERENCES employee(id)
 );
 
 -- FROM NOTES **

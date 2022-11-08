@@ -118,7 +118,7 @@ departments = () => {
                 {
                     type: 'number',
                     name: 'role_id',
-                    message: 'Please enter id to update student role'
+                    message: 'Please enter id to update employee role'
                 }
             ]).then(results => {
                 db.query('SELECT * FROM course_names', function (err, results) {

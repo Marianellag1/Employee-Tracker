@@ -17,14 +17,11 @@ VALUES ("Sales Lead", "100000", 1),
 -- roles taken from class hours quick challange walkthrough
 -- roles are joined to department
 
-INSERT INTO employee (first_name, last_name, role_id)
-VALUES ("Tony", "Montana", 1),
-       ("Wednesday", "Addams", 4),
-       ("Ace", "Ventura", 2),
-       ("Sarah", "Connor", 2),
-       ("Rocky", "Balboa", 1),
-       ("Katniss", "Everdeen", 3);
-
-
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Edna", "Mode", 4, 5);
+INSERT INTO employee (first_name, last_name)
+VALUES ("Edna", "Mode"),
+       ("Tony", "Montana"),
+       ("Wednesday", "Addams"),
+       ("Ace", "Ventura"),
+       ("Sarah", "Connor"),
+       ("Rocky", "Balboa"),
+       ("Katniss", "Everdeen");
