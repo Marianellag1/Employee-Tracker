@@ -1,14 +1,14 @@
 const express = require('express');
-const console = require('console.table');
+const cTable = require('console.table');
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 
-const PORT = process.env.PORT || 3001;
 const app = express();
+const PORT = process.env.PORT || 3001;
 
 // Express middleware
-app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 // Connect to database
 const db = mysql.createConnection(
@@ -72,8 +72,10 @@ const employeeMenu = () => {
                     viewEmpDepartment();
                     break;
                 case 'Quit'://should end node server.js and keep code
-                    exitPromp()
-                    break;
+                    // exitPromp()
+                    // break;
+                    console.log('Goodbye!');
+                    process.exit();
 
             }
         });
@@ -81,39 +83,41 @@ const employeeMenu = () => {
 };
 
 function viewDepartments() {
-    db.query(`
-SELECT * FROM department`, function (err, res) {
-        if (err) throw err;
-        console.getTable('All Departments:', res);
+    db.query('SELECT * FROM department', function (err, res) {
+        if (err) {
+            console.log(err);
+        }
+        console.table(res);
     });
 };
 
 function viewEmployees() {
     db.query(`
-SELECT employee.id, employee.first_name, employee.last_name, roles.title, department.department_name AS department, roles.salary, CONCAT(employee.first_name, ' ', employee.last_name) AS manager
-FROM employee INNER JOIN roles ON employee.role_id = roles.id
-INNER JOIN department on roles.department_id = department.id
-LEFT JOIN employee manager ON manager.id = employee.manager_id`, function (err, res) {
-        if (err) throw err;
-        console.getTable('All Employees:', res);
+    SELECT employee.id, employee.first_name, employee.last_name, roles.title, department.department_name AS department, roles.salary, CONCAT(employee.first_name, ' ', employee.last_name) AS manager 
+    FROM employee INNER JOIN roles 
+    ON employee.role_id = roles.id INNER JOIN department on roles.department_id = department.id LEFT JOIN employee manager ON manager.id = employee.manager_id`, function (err, res) {
+        if (err) {
+            console.log(err);
+        } 
+        console.table(res);
         employeeMenu();
     })
 };
 
 function viewRoles() {
-    db.query(`
-SELECT roles.id, roles.title, department.department_name, roles.salary 
-FROM roles 
-JOIN department ON roles.department_id = department.id`, function (err, res) {
-        if (err) throw err;
-        console.getTable('All Roles', res);
-        employeeMenu();
-    })
+    db.query(
+        'SELECT roles.id, roles.title, department.department_name AS department, roles.salary FROM roles JOIN department ON roles.department_id = department.id', function (err, res) {
+        if (err) {
+            console.log(err);
+        }
+    console.table(res);
+    employeeMenu();
+})
 };
 
 
-
-// app.listen(PORT, () => {
-//     console.log(`Server running on port ${PORT}`);
-//     init();
-// });
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    init();
+});
+//code from act. && outside help
