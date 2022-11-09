@@ -1,6 +1,14 @@
-const mysql = require('mysql2');
+const express = require('express');
 const console = require('console.table');
 const inquirer = require('inquirer');
+const mysql = require('mysql2');
+
+const PORT = process.env.PORT || 3001;
+const app = express();
+
+// Express middleware
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // Connect to database
 const db = mysql.createConnection(
@@ -12,7 +20,11 @@ const db = mysql.createConnection(
         database: 'employees_db'
     },
 
-    );
+);
+
+function init() {
+    employeeMenu();
+};
 
 const employeeMenu = () => {
     inquirer
@@ -22,134 +34,86 @@ const employeeMenu = () => {
                 name: 'menu',
                 message: 'What would you like to do?',
                 choices: [
-                    `View all Departments`,
-                    `View all Roles`,
-                    `View all Employees`,
-                    `Update an Employee Role`,
-                    `Update Employee Managers`,
-                    `View Employees by Manager`,
-                    `View Employees by Department`,
-                    `Delete Departments`,
-                    `Delete Roles`,
-                    `Delete Employees`,
+                    `View all departments`,
+                    `View all roles`,
+                    `View all employees`,
+                    `Add a department`,
+                    `Add an employee`,
+                    `Add a role`,
+                    `Update an employee role`,
+                    `View employees by department`,
                     `Quit`,
                 ]
             }
         ]).then(ans => {
             switch (ans.menu) {
-                case 'View all Departments':
-                    departments();
+                case 'View all departments':
+                    viewDepartments();
                     break;
-                case 'View all Roles':
-                    roles();
+                case 'View all roles':
+                    viewRoles();
                     break;
-                case 'View all Employees':
-                    employees();
+                case 'View all employees':
+                    viewEmployees();
                     break;
-                case 'Update an Employee Role':
+                case 'Add a department':
+                    addDepartment();
+                    break;
+                case 'Add an employee':
+                    addEmployee();
+                    break;
+                case 'Add a role':
+                    addRole();
+                    break;
+                case 'Update an employee role':
                     updEmployeeRole();
                     break;
-                case 'Update Employee Managers':
-                    updManagers();
-                    break;
-                case 'View Employees by Manager':
-                    viewEmManager();
-                    break;
-                case 'View Employees by Department':
-                    viewEmDepartment();
-                    break;
-                case 'Delete Departments':
-                    dltDepartments();
-                    break;
-                case 'Delete Roles':
-                    dltRoles();
-                    break;
-                case 'Delete Employees':
-                    dltEmployees();
+                case 'View employees by department':
+                    viewEmpDepartment();
                     break;
                 case 'Quit'://should end node server.js and keep code
-                    console.log('Goodbye!');//Works!!
-                    process.end();
+                    exitPromp()
+                    break;
 
             }
-        })
+        });
 
-}
+};
 
-departments = () => {
-    const mysql = 'SELECT * FROM department';
-    db.query(mysql, (err, result) => {
-        if (err) {
-            return console.log(err);
-        }
-        console.table(result);
+function viewDepartments() {
+    db.query(`
+SELECT * FROM department`, function (err, res) {
+        if (err) throw err;
+        console.getTable('All Departments:', res);
+    });
+};
+
+function viewEmployees() {
+    db.query(`
+SELECT employee.id, employee.first_name, employee.last_name, roles.title, department.department_name AS department, roles.salary, CONCAT(employee.first_name, ' ', employee.last_name) AS manager
+FROM employee INNER JOIN roles ON employee.role_id = roles.id
+INNER JOIN department on roles.department_id = department.id
+LEFT JOIN employee manager ON manager.id = employee.manager_id`, function (err, res) {
+        if (err) throw err;
+        console.getTable('All Employees:', res);
         employeeMenu();
     })
-},
+};
 
-    roles = () => {
-        const mysql = 'SELECT * FROM role';
-        db.query(mysql, (err, result) => {
-            if (err) {
-                return console.log(err);
-            }
-            console.table(result);
-            employeeMenu();
-        })
-    },
-
-    employees = () => {
-        const mysql = 'SELECT * FROM department';
-    },
-
-    updEmployeeRole = () => {
-        inquirer
-            .prompt([
-                {
-                    type: 'input',
-                    name: 'first_name',
-                    message: 'Please enter employees first name'
-                },
-                {
-                    type: 'input',
-                    name: 'last_name',
-                    message: 'Please enter employees last name'
-                },
-                {
-                    type: 'number',
-                    name: 'role_id',
-                    message: 'Please enter id to update employee role'
-                }
-            ]).then(results => {
-                db.query('SELECT * FROM course_names', function (err, results) {
-                    console.log(results);
-                })
-            })
-    };
-
-updManagers = () => {
-    const mysql = 'SELECT * FROM department';
-},
-
-    viewEmManager = () => {
-        const mysql = 'SELECT * FROM department';
-    },
-
-    viewEmDepartment = () => {
-        const mysql = 'SELECT * FROM department';
-    },
-
-    dltDepartments = () => {
-        const mysql = 'SELECT * FROM department';
-    },
-
-    dltRoles = () => {
-        const mysql = 'SELECT * FROM department';
-    },
-
-    dltEmployees = () => {
-        const mysql = 'SELECT * FROM department';
-    },
+function viewRoles() {
+    db.query(`
+SELECT roles.id, roles.title, department.department_name, roles.salary 
+FROM roles 
+JOIN department ON roles.department_id = department.id`, function (err, res) {
+        if (err) throw err;
+        console.getTable('All Roles', res);
+        employeeMenu();
+    })
+};
 
 
-    employeeMenu();
+
+// app.listen(PORT, () => {
+//     console.log(`Server running on port ${PORT}`);
+//     init();
+// });
