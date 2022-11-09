@@ -14,6 +14,9 @@
 
 
 ---
+![Screenshot 2022-11-08 183950](https://user-images.githubusercontent.com/110939445/200722736-1c5ee030-bff5-414b-b084-0555b044fbdb.png)
+![Screenshot 2022-11-08 184041](https://user-images.githubusercontent.com/110939445/200722751-9fdf5777-29c0-4262-a22f-8a8eb283c946.png)
+![Screenshot 2022-11-08 192054](https://user-images.githubusercontent.com/110939445/200722765-c361b336-7a53-4c0c-8d58-129f61149a39.png)
 
 ## **Description of the Project**
 Allows user to view and manage departments, roles and employees in any company.
@@ -21,7 +24,7 @@ Allows user to view and manage departments, roles and employees in any company.
 
 
 ## **Live Video**
-
+https://app.castify.com/view/69ca4678-4ed5-4c5f-9f37-2689ca4ff513
 
 
 ## **Installation**
